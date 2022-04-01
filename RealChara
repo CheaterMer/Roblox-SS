@@ -38,7 +38,7 @@ end
 
 --// Config
 
-local hideEntire = false -- if true it hides your entire bar
+local hideEntire = true -- if true it hides your entire bar
 local lolwings = false -- if true it gives you edgy star glitcher wings
 
 --// Services
@@ -1870,7 +1870,6 @@ pcall(function()
 	end))
 end)
 -- if not plr.Character then
-rep.DefaultChatSystemChatEvents.SayMessageRequest:Destroy()
 local con
 local fakeFolder = Instance.new("Folder")
 fakeFolder.Name = "ServerCooldown"
@@ -1981,7 +1980,6 @@ plr.CharacterAdded:Connect(function(char)
 	local h = pn.Parent:WaitForChild("HP")
 	char:WaitForChild("HateArm"):Destroy()
 	char:WaitForChild("Karma"):Destroy()
-	functions:InvokeServer({pass,"Reset"})
 	repeat task.wait() until hum.Health <= 1
 	if not hideEntire then
 		pn:Destroy()
@@ -2626,36 +2624,6 @@ spawn(function()
 			end
 		end
 	end)
-end)
-runS.RenderStepped:Connect(function()
-	if not unstress and plr.Character then
-		for i=1,adjust do
-			if not unstress then
-				local t = tick()
-				functions:InvokeServer({pass,"Blocking",false})
-				local ping = math.floor(((tick() - t) / 2) * 1000)
-				if ping > 500 then
-					unstress = true
-					adjust = 1
-					coroutine.resume(coroutine.create(function()
-						task.wait(3)
-						local cs = serverCool:WaitForChild(plr.Name):GetChildren()
-						if #cs == 0 then
-							adjust = 5
-						else
-							adjust = 15
-						end
-						unstress = false
-					end))
-				end
-				if not unstress then
-					if math.random(1,2) == 1 then
-						functions:InvokeServer({pass,"Blocking",false})
-					end
-				end
-			end
-		end
-	end
 end)
 
 runS.Heartbeat:Connect(function()
